@@ -13,12 +13,15 @@
 <body>
 
 <script src="js/track.js"></script>
+<script src="js/cart.js"></script>
+
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 function preload() {
   game.load.image('tracks', 'imgs/tracks.png');
+  game.load.image('cart', 'imgs/cart.png');
 
 	game.stage.backgroundColor = "#FFFFFF";
 }
@@ -28,6 +31,8 @@ function create() {
 
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
+
+	this.cart = new Cart();
 }
 
 function update() {
