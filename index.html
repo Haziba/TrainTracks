@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Making your first game, part 1</title>
+	<script type="text/javascript" src="lib/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script src="js/track.js"></script>
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+  game.load.image('tracks', 'imgs/tracks.png');
+
+	game.stage.backgroundColor = "#FFFFFF";
+}
+
+function create() {
+	this.tracks = [];
+
+	for(var i = 0; i < 12; i++)
+  	this.tracks.push(new Track(i, 12));
+}
+
+function update() {
+	for(var i = 0; i < this.tracks.length; i++)
+		this.tracks[i].update();
+}
+
+</script>
+
+</body>
+</html>
