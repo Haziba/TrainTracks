@@ -18,6 +18,7 @@
 <script type="text/javascript">
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var controls = {};
 
 function preload() {
   game.load.image('tracks', 'imgs/tracks.png');
@@ -32,7 +33,9 @@ function create() {
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
 
-	this.cart = new Cart();
+	controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+	this.cart = new Cart(controls);
 }
 
 function update() {
