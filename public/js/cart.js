@@ -1,19 +1,59 @@
 var Cart = function(controls){
   var that = this;
 
-  this.sprite = game.add.sprite(400, 460, 'cart');
-  this.sprite.anchor.x = 0.5;
-  this.sprite.anchor.y = 1;
+  this.sprites = {
+    up: game.add.sprite(0, 0, 'cart_up'),
+    down: game.add.sprite(0, 0, 'cart_down'),
+  };
+
+  for(var sprite in this.sprites){
+    this.sprites[sprite].anchor.x = 0.5;
+    this.sprites[sprite].anchor.y = 1;
+
+    this.sprites[sprite].x = 400;
+    this.sprites[sprite].y = 460;
+
+    this.sprites[sprite].visible = false;
+  }
+
+  this.sprite = this.sprites.up;
+  this.sprite.visible = true;
   this.sprite.angle = 1.5;
 
   var angleVelocity = 0;
   var yVelocity = 0;
+  var down = false;
 
   var jump = function(){
     yVelocity = -10;
   }
 
+  var changeSpriteTo = function(sprite){
+    that.sprite.visible = false;
+    sprite.x = that.sprite.x;
+    sprite.y = that.sprite.y;
+    sprite.angle = that.sprite.angle;
+    that.sprite = sprite;
+    that.sprite.visible = true;
+  }
+
+  var goDown = function(){
+    if(!down){
+      down = true;
+      changeSpriteTo(that.sprites.down);
+    }
+  }
+
+  var goUp = function(){
+    if(down){
+      down = false;
+      changeSpriteTo(that.sprites.up);
+    }
+  }
+
   controls.jump.onDown.add(jump, this);
+  controls.down.onDown.add(goDown, this);
+  controls.down.onUp.add(goUp, this);
 
   this.hitBox = function(){
     return new Phaser.Rectangle(that.sprite.x - 30, that.sprite.y - 150, 60, 60);
