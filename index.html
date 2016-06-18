@@ -20,6 +20,8 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var controls = {};
+var score = 0;
+var text;
 
 function preload() {
   game.load.image('tracks', 'imgs/tracks.png');
@@ -48,14 +50,34 @@ function create() {
 	controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 	this.cart = new Cart(controls);
+
+	var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+
+  //  The Text is positioned at 0, 100
+  text = game.add.text(0, 0, score, style);
+  text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+
+  //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
+  text.setTextBounds(0, 100, 800, 100);
 }
 
 function update() {
+	
+
 	for(var i = 0; i < this.tracks.length; i++)
 		this.tracks[i].update();
 
-	for(var i = 0; i < this.coins.length; i++)
-		this.coins[i].update();
+	for(var i = this.coins.length-1; i >= 0; i--){
+		if(this.cart.hitBox().intersects(this.coins[i].hitBox())){
+			this.coins[i].collect();
+			score += 100;
+			this.coins.splice(i, 1);
+
+			text.setText(score);
+		} else {
+			this.coins[i].update();
+		}
+	}
 
 	this.cart.update();
 }

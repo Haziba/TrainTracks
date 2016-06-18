@@ -15,6 +15,10 @@ var Cart = function(controls){
 
   controls.jump.onDown.add(jump, this);
 
+  this.hitBox = function(){
+    return new Phaser.Rectangle(that.sprite.x - 30, that.sprite.y - 150, 60, 60);
+  }
+
   this.update = function(){
     if(yVelocity > 0 && this.sprite.y == 460){
       if(that.sprite.angle <= -1.5){
