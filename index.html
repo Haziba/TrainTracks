@@ -15,6 +15,7 @@
 <script src="js/track.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/coin.js"></script>
+<script src="js/timer.js"></script>
 
 <script type="text/javascript">
 
@@ -35,17 +36,18 @@ function create() {
 	var that = this;
 	this.tracks = [];
 	this.coins = [];
+	this.timers = [];
 
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
 
-	setInterval(function(){
+	game.time.events.loop(Phaser.Timer.SECOND * 0.5, function(){
 		var coin = new Coin(function(){
 			that.coins.splice(that.coins.indexOf(coin), 1);
 		});
 
 		that.coins.push(coin);
-	}, 500);
+	}, this);
 
 	controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -62,7 +64,8 @@ function create() {
 }
 
 function update() {
-	
+	for(var i = 0; i < this.timers.length; i++)
+		this.timers[i].update();
 
 	for(var i = 0; i < this.tracks.length; i++)
 		this.tracks[i].update();
