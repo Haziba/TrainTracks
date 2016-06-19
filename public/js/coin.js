@@ -13,8 +13,8 @@ var Coin = function(removeCallback){
     that.sprite.destroy();
   }
 
-  this.update = function(){
-    that.sprite.x -= 400 * game.time.elapsed/1000;
+  this.update = function(speed){
+    that.sprite.x -= speed * game.time.elapsed/1000;
 
     if(that.sprite.x < -that.sprite.width)
       removeCallback();

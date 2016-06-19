@@ -32,8 +32,8 @@ var Track = function(i, total){
     danger = false;
   }
 
-  this.update = function(){
-    that.sprite.x -= 400 * game.time.elapsed/1000;
+  this.update = function(speed){
+    that.sprite.x -= speed * game.time.elapsed/1000;
 
     if(that.sprite.x < -that.sprite.width){
       that.sprite.x += that.sprite.width * total;

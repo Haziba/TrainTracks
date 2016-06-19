@@ -47,6 +47,7 @@ function create() {
 	this.coins = [];
 	this.timers = [];
 	this.dangers = [];
+	this.speed = 0;
 
 	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
 
@@ -87,11 +88,13 @@ function create() {
 }
 
 function update() {
+	this.speed = Math.min(this.speed + 5, 600);
+
 	for(var i = 0; i < this.timers.length; i++)
 		this.timers[i].update();
 
 	for(var i = 0; i < this.tracks.length; i++){
-		this.tracks[i].update();
+		this.tracks[i].update(this.speed);
 
 		if(this.tracks[i].danger()){
 			if(this.cart.bottomHitBox().intersects(this.tracks[i].dangerHitBox())){
@@ -114,7 +117,7 @@ function update() {
 
 			text.setText(score);
 		} else {
-			this.coins[i].update();
+			this.coins[i].update(this.speed);
 		}
 	}
 
@@ -128,7 +131,7 @@ function update() {
 			this.lives--;
 			this.livesText.setText(this.lives);
 		} else {
-			this.dangers[i].update();
+			this.dangers[i].update(this.speed);
 		}
 	}
 
