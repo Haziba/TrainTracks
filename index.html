@@ -58,6 +58,8 @@ function create() {
 	this.livesText = game.add.text(0, 0, 'Lives\n' + this.lives, style);
 	this.livesText.setTextBounds(600, 50, 200, 50);
 
+	this.gameRunning = true;
+
 	this.score = 0;
   this.scoreText = game.add.text(0, 0, 'Score\n' + this.score, style);
   this.scoreText.setTextBounds(0, 50, 200, 50);
@@ -89,6 +91,15 @@ function newItem(that){
 	that.nextItem = Math.random() * (itemSpacing.max - itemSpacing.min) + itemSpacing.min;
 }
 
+function takeHit(that){
+	that.lives--;
+	if(that.lives <= 0)
+		that.gameRunning = false;
+	that.speed = -10;
+
+	that.livesText.setText('Lives\n' + that.lives);
+}
+
 function update() {
 	this.speed = Math.min(this.speed + 5, 600);
 	var startingSpeed = this.speed;
@@ -102,10 +113,7 @@ function update() {
 		if(this.tracks[i].danger()){
 			if(this.cart.bottomHitBox().intersects(this.tracks[i].dangerHitBox())){
 				this.tracks[i].collide();
-				this.lives--;
-				this.speed = -10;
-
-				this.livesText.setText('Lives\n' + this.lives);
+				takeHit(this);
 			}
 			game.debug.geom(this.tracks[i].dangerHitBox(), 'rgba(255,0,0,1)');
 		}
@@ -131,10 +139,7 @@ function update() {
 		if(this.cart.topHitBox().intersects(this.dangers[i].hitBox())){
 			this.dangers[i].collide();
 			this.dangers.splice(i, 1);
-			this.speed = -10;
-
-			this.lives--;
-			this.livesText.setText('Lives\n' + this.lives);
+			takeHit(this);
 		} else {
 			this.dangers[i].update(startingSpeed);
 		}
