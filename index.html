@@ -15,6 +15,7 @@
 <script src="js/track.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/coin.js"></script>
+<script src="js/danger.js"></script>
 
 <script type="text/javascript">
 
@@ -30,6 +31,7 @@ function preload() {
   game.load.image('cart_up', 'imgs/cart_up.png');
 	game.load.image('cart_down', 'imgs/cart_down.png');
 	game.load.image('coin', 'imgs/coin.png');
+	game.load.image('danger', 'imgs/danger.png');
 
 	game.stage.backgroundColor = "#FFFFFF";
 
@@ -43,16 +45,25 @@ function create() {
 	this.tracks = [];
 	this.coins = [];
 	this.timers = [];
+	this.dangers = [];
 
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
 
 	game.time.events.loop(Phaser.Timer.SECOND * 0.5, function(){
-		var coin = new Coin(function(){
-			that.coins.splice(that.coins.indexOf(coin), 1);
-		});
+		if(Math.random() < 0.7){
+			var coin = new Coin(function(){
+				that.coins.splice(that.coins.indexOf(coin), 1);
+			});
 
-		that.coins.push(coin);
+			that.coins.push(coin);
+		} else {
+			var danger = new Danger(function(){
+				that.dangers.splice(that.dangers.indexOf(danger), 1);
+			});
+
+			that.dangers.push(danger);
+		}
 	}, this);
 
 	controls.jump = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -78,6 +89,8 @@ function update() {
 		this.tracks[i].update();
 
 	for(var i = this.coins.length-1; i >= 0; i--){
+		game.debug.geom(this.coins[i].hitBox(), 'rgba(255,0,0,1)');
+
 		if(this.cart.hitBox().intersects(this.coins[i].hitBox())){
 			this.coins[i].collect();
 			score += 100;
@@ -87,8 +100,19 @@ function update() {
 		} else {
 			this.coins[i].update();
 		}
+	}
 
-		game.debug.geom(this.coins[i].hitBox(), 'rgba(255,0,0,1)');
+	for(var i = this.dangers.length-1; i >= 0; i--){
+		game.debug.geom(this.dangers[i].hitBox(), 'rgba(255,0,0,1)');
+
+		if(this.cart.hitBox().intersects(this.dangers[i].hitBox())){
+			this.dangers[i].collide();
+			this.dangers.splice(i, 1);
+
+			text.setText(score);
+		} else {
+			this.dangers[i].update();
+		}
 	}
 
 	this.cart.update();
