@@ -1,6 +1,11 @@
 var Cart = function(controls){
   var that = this;
 
+  var angleVelocity = 0;
+  var yVelocity = 0;
+  var down = false;
+  var position = new Phaser.Point(400, 460);
+
   this.sprites = {
     up: game.add.sprite(0, 0, 'cart_up'),
     down: game.add.sprite(0, 0, 'cart_down'),
@@ -10,8 +15,8 @@ var Cart = function(controls){
     this.sprites[sprite].anchor.x = 0.5;
     this.sprites[sprite].anchor.y = 1;
 
-    this.sprites[sprite].x = 400;
-    this.sprites[sprite].y = 460;
+    this.sprites[sprite].x = position.x;
+    this.sprites[sprite].y = position.y;
 
     this.sprites[sprite].visible = false;
   }
@@ -19,10 +24,6 @@ var Cart = function(controls){
   this.sprite = this.sprites.up;
   this.sprite.visible = true;
   this.sprite.angle = 1.5;
-
-  var angleVelocity = 0;
-  var yVelocity = 0;
-  var down = false;
 
   var jump = function(){
     yVelocity = -10;
@@ -56,11 +57,11 @@ var Cart = function(controls){
   controls.down.onUp.add(goUp, this);
 
   this.hitBox = function(){
-    return new Phaser.Rectangle(that.sprite.x - 30, that.sprite.y - 150, 60, 60);
+    return new Phaser.Rectangle(position.x - 30, position.y - 150, 60, 60);
   }
 
   this.update = function(){
-    if(yVelocity > 0 && this.sprite.y == 460){
+    if(yVelocity > 0 && position.y == 460){
       if(that.sprite.angle <= -1.5){
         if(that.sprite.angle >= 0){
           angleVelocity -= 0.75;
@@ -80,14 +81,17 @@ var Cart = function(controls){
 
       that.sprite.angle += angleVelocity;
     } else {
-      that.sprite.y += yVelocity;
+      position.y += yVelocity;
       yVelocity += 0.5;
 
       that.sprite.angle = -30;
 
-      if(that.sprite.y >= 460) {
-        that.sprite.y = 460;
+      if(position.y >= 460) {
+        position.y = 460;
       }
     }
+
+    this.sprite.position.x = position.x;
+    this.sprite.position.y = position.y;
   }
 }
