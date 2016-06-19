@@ -57,7 +57,7 @@ var Cart = function(controls){
   controls.down.onUp.add(goUp, this);
 
   this.hitBox = function(){
-    return new Phaser.Rectangle(position.x - 30, position.y - 150, 60, 60);
+    return new Phaser.Rectangle(position.x - 10, position.y - 150, 25, 60);
   }
 
   this.update = function(){

@@ -23,14 +23,19 @@ var controls = {};
 var score = 0;
 var text;
 
+window.debugMode = true;
+
 function preload() {
   game.load.image('tracks', 'imgs/tracks.png');
   game.load.image('cart_up', 'imgs/cart_up.png');
 	game.load.image('cart_down', 'imgs/cart_down.png');
 	game.load.image('coin', 'imgs/coin.png');
-	game.load.image('ducking', 'imgs/ducking.png');
 
 	game.stage.backgroundColor = "#FFFFFF";
+
+	if(!window.debugMode){
+		game.debug.geom = function(){}
+	}
 }
 
 function create() {
@@ -82,9 +87,12 @@ function update() {
 		} else {
 			this.coins[i].update();
 		}
+
+		game.debug.geom(this.coins[i].hitBox(), 'rgba(255,0,0,1)');
 	}
 
 	this.cart.update();
+	game.debug.geom(this.cart.hitBox(), 'rgba(255,0,0,1)');
 }
 
 </script>
