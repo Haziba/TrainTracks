@@ -25,6 +25,7 @@ var itemSpacing = {
 	min: 150,
 	max: 800
 };
+var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle", align: "center" };
 
 window.debugMode = true;
 
@@ -51,8 +52,6 @@ function create() {
 	this.dangers = [];
 	this.speed = 0;
 	this.nextItem = Math.random() * (itemSpacing.max - itemSpacing.min) + itemSpacing.min;
-
-	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle", align: "center" };
 
 	this.lives = 5;
 	this.livesText = game.add.text(0, 0, 'Lives\n' + this.lives, style);
@@ -102,6 +101,9 @@ function takeHit(that){
 
 function endGame(that){
 	that.gameRunning = false;
+
+	that.endText = game.add.text(0, 0, 'Game over!\n\nFinal score: ' + that.score, style);
+	that.endText.setTextBounds(0, 0, 800, 300);
 }
 
 function update() {
