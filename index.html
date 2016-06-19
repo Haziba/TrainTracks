@@ -94,13 +94,20 @@ function newItem(that){
 function takeHit(that){
 	that.lives--;
 	if(that.lives <= 0)
-		that.gameRunning = false;
+		endGame(that);
 	that.speed = -10;
 
 	that.livesText.setText('Lives\n' + that.lives);
 }
 
+function endGame(that){
+	that.gameRunning = false;
+}
+
 function update() {
+	if(!this.gameRunning)
+		return;
+
 	this.speed = Math.min(this.speed + 5, 600);
 	var startingSpeed = this.speed;
 
