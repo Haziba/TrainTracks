@@ -28,7 +28,8 @@ var Cart = function(controls){
   this.sprite.angle = 1.5;
 
   var jump = function(){
-    if(!inTheAir){
+    if(yVelocity >= 0 && position.y >= trackHeight - 10){
+      position.y = trackHeight;
       yVelocity = -10;
       inTheAir = true;
     }
