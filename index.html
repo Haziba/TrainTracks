@@ -96,17 +96,19 @@ function newItem(that){
 
 function update() {
 	this.speed = Math.min(this.speed + 5, 600);
+	var startingSpeed = this.speed;
 
 	for(var i = 0; i < this.timers.length; i++)
 		this.timers[i].update();
 
 	for(var i = 0; i < this.tracks.length; i++){
-		this.tracks[i].update(this.speed);
+		this.tracks[i].update(startingSpeed);
 
 		if(this.tracks[i].danger()){
 			if(this.cart.bottomHitBox().intersects(this.tracks[i].dangerHitBox())){
 				this.tracks[i].collide();
 				this.lives--;
+				this.speed = -10;
 
 				this.livesText.setText(this.lives);
 			}
@@ -124,7 +126,7 @@ function update() {
 
 			text.setText(score);
 		} else {
-			this.coins[i].update(this.speed);
+			this.coins[i].update(startingSpeed);
 		}
 	}
 
@@ -134,11 +136,12 @@ function update() {
 		if(this.cart.topHitBox().intersects(this.dangers[i].hitBox())){
 			this.dangers[i].collide();
 			this.dangers.splice(i, 1);
+			this.speed = -10;
 
 			this.lives--;
 			this.livesText.setText(this.lives);
 		} else {
-			this.dangers[i].update(this.speed);
+			this.dangers[i].update(startingSpeed);
 		}
 	}
 
