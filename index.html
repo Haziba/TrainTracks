@@ -48,6 +48,12 @@ function create() {
 	this.timers = [];
 	this.dangers = [];
 
+	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
+
+	this.lives = 5;
+	this.livesText = game.add.text(0, 0, this.lives, style);
+	this.livesText.setTextBounds(600, 100, 200, 50);
+
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
 
@@ -72,8 +78,6 @@ function create() {
 
 	this.cart = new Cart(controls);
 
-	var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-
   //  The Text is positioned at 0, 100
   text = game.add.text(0, 0, score, style);
   text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
@@ -89,8 +93,15 @@ function update() {
 	for(var i = 0; i < this.tracks.length; i++){
 		this.tracks[i].update();
 
-		if(this.tracks[i].danger())
+		if(this.tracks[i].danger()){
+			if(this.cart.bottomHitBox().intersects(this.tracks[i].dangerHitBox())){
+				this.tracks[i].collide();
+				this.lives--;
+
+				this.livesText.setText(this.lives);
+			}
 			game.debug.geom(this.tracks[i].dangerHitBox(), 'rgba(255,0,0,1)');
+		}
 	}
 
 	for(var i = this.coins.length-1; i >= 0; i--){
@@ -114,7 +125,8 @@ function update() {
 			this.dangers[i].collide();
 			this.dangers.splice(i, 1);
 
-			text.setText(score);
+			this.lives--;
+			this.livesText.setText(this.lives);
 		} else {
 			this.dangers[i].update();
 		}
