@@ -74,7 +74,7 @@ var Cart = function(controls){
   }
 
   this.bottomHitBox = function(){
-    var box = new Phaser.Rectangle(position.x + 35, position.y - 50, 25, 50);
+    var box = new Phaser.Rectangle(position.x + 15, position.y - 60, 25, 40);
 
     return box
   }
