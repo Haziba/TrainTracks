@@ -4,6 +4,7 @@ var Cart = function(controls){
   var angleVelocity = 0;
   var yVelocity = 0;
   var down = false;
+  var inTheAir = false;
   var trackHeight = 457;
   var position = new Phaser.Point(400, trackHeight);
 
@@ -27,7 +28,10 @@ var Cart = function(controls){
   this.sprite.angle = 1.5;
 
   var jump = function(){
-    yVelocity = -10;
+    if(!inTheAir){
+      yVelocity = -10;
+      inTheAir = true;
+    }
   }
 
   var changeSpriteTo = function(sprite){
@@ -69,7 +73,7 @@ var Cart = function(controls){
   }
 
   this.update = function(){
-    if(yVelocity >= 0 && position.y == trackHeight){
+    if(!inTheAir){
       if(that.sprite.angle <= -1.5){
         if(that.sprite.angle >= 0){
           angleVelocity -= 0.75;
@@ -96,6 +100,7 @@ var Cart = function(controls){
 
       if(position.y >= trackHeight) {
         position.y = trackHeight;
+        inTheAir = false;
       }
     }
 
