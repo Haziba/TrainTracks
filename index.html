@@ -32,6 +32,7 @@ function preload() {
 	game.load.image('cart_down', 'imgs/cart_down.png');
 	game.load.image('coin', 'imgs/coin.png');
 	game.load.image('danger', 'imgs/danger.png');
+	game.load.image('danger_tracks', 'imgs/danger_tracks.png');
 
 	game.stage.backgroundColor = "#FFFFFF";
 
@@ -91,7 +92,7 @@ function update() {
 	for(var i = this.coins.length-1; i >= 0; i--){
 		game.debug.geom(this.coins[i].hitBox(), 'rgba(255,0,0,1)');
 
-		if(this.cart.hitBox().intersects(this.coins[i].hitBox())){
+		if(this.cart.topHitBox().intersects(this.coins[i].hitBox())){
 			this.coins[i].collect();
 			score += 100;
 			this.coins.splice(i, 1);
@@ -105,7 +106,7 @@ function update() {
 	for(var i = this.dangers.length-1; i >= 0; i--){
 		game.debug.geom(this.dangers[i].hitBox(), 'rgba(255,0,0,1)');
 
-		if(this.cart.hitBox().intersects(this.dangers[i].hitBox())){
+		if(this.cart.topHitBox().intersects(this.dangers[i].hitBox())){
 			this.dangers[i].collide();
 			this.dangers.splice(i, 1);
 
@@ -116,7 +117,8 @@ function update() {
 	}
 
 	this.cart.update();
-	game.debug.geom(this.cart.hitBox(), 'rgba(255,0,0,1)');
+	game.debug.geom(this.cart.bottomHitBox(), 'rgba(255,0,0,1)');
+	game.debug.geom(this.cart.topHitBox(), 'rgba(255,0,0,1)');
 }
 
 </script>
