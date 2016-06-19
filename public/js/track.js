@@ -19,6 +19,19 @@ var Track = function(i, total){
 
   recreate();
 
+  this.danger = function(){
+    return danger;
+  }
+
+  this.dangerHitBox = function(){
+    return new Phaser.Rectangle(that.sprite.x + 25, that.sprite.y, 30, 30);
+  }
+
+  this.collide = function(){
+    this.dangerSprite.destroy();
+    danger = false;
+  }
+
   this.update = function(){
     that.sprite.x -= 400 * game.time.elapsed/1000;
 
