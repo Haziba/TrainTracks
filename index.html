@@ -21,8 +21,6 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 var controls = {};
-var score = 0;
-var text;
 var itemSpacing = {
 	min: 150,
 	max: 800
@@ -54,11 +52,15 @@ function create() {
 	this.speed = 0;
 	this.nextItem = Math.random() * (itemSpacing.max - itemSpacing.min) + itemSpacing.min;
 
-	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle" };
+	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle", align: "center" };
 
 	this.lives = 5;
 	this.livesText = game.add.text(0, 0, this.lives, style);
-	this.livesText.setTextBounds(600, 100, 200, 50);
+	this.livesText.setTextBounds(600, 50, 200, 50);
+
+	this.score = 0;
+  this.scoreText = game.add.text(0, 0, 'Score\n' + this.score, style);
+  this.scoreText.setTextBounds(0, 50, 200, 50);
 
 	for(var i = 0; i < 12; i++)
   	this.tracks.push(new Track(i, 12));
@@ -67,13 +69,6 @@ function create() {
 	controls.down = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 
 	this.cart = new Cart(controls);
-
-  //  The Text is positioned at 0, 100
-  text = game.add.text(0, 0, score, style);
-  text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-
-  //  We'll set the bounds to be from x0, y100 and be 800px wide by 100px high
-  text.setTextBounds(0, 100, 800, 100);
 }
 
 function newItem(that){
@@ -121,10 +116,10 @@ function update() {
 
 		if(this.cart.topHitBox().intersects(this.coins[i].hitBox())){
 			this.coins[i].collect();
-			score += 100;
+			this.score += 100;
 			this.coins.splice(i, 1);
 
-			text.setText(score);
+			this.scoreText.setText('Score\n' + this.score);
 		} else {
 			this.coins[i].update(startingSpeed);
 		}
