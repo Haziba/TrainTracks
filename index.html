@@ -55,7 +55,7 @@ function create() {
 	var style = { font: "bold 32px Arial", fill: "#000", boundsAlignH: "center", boundsAlignV: "middle", align: "center" };
 
 	this.lives = 5;
-	this.livesText = game.add.text(0, 0, this.lives, style);
+	this.livesText = game.add.text(0, 0, 'Lives\n' + this.lives, style);
 	this.livesText.setTextBounds(600, 50, 200, 50);
 
 	this.score = 0;
@@ -105,7 +105,7 @@ function update() {
 				this.lives--;
 				this.speed = -10;
 
-				this.livesText.setText(this.lives);
+				this.livesText.setText('Lives\n' + this.lives);
 			}
 			game.debug.geom(this.tracks[i].dangerHitBox(), 'rgba(255,0,0,1)');
 		}
@@ -134,7 +134,7 @@ function update() {
 			this.speed = -10;
 
 			this.lives--;
-			this.livesText.setText(this.lives);
+			this.livesText.setText('Lives\n' + this.lives);
 		} else {
 			this.dangers[i].update(startingSpeed);
 		}
